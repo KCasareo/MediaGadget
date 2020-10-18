@@ -24,7 +24,7 @@ namespace MediaGadget.ViewModel {
 			// Commands
 			NextCommand = new RelayCommand(Next, param => this.playing && this.canExecute);
 			PrevCommand = new RelayCommand(Prev, param => this.playing && this.canExecute);
-			
+			StopCommand = new RelayCommand(Stop, param => this.playing && this.canExecute);
 			
 		}
 		// Media state
