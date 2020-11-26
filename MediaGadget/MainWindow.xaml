@@ -30,12 +30,16 @@
             <Button Style="{StaticResource MediaButton}" x:Name="ButtonBack">
                 <Image/>
             </Button>
-            <Button  Style="{StaticResource MediaButton}" x:Name="ButtonPlayPause">
+            <Button  Style="{StaticResource MediaButton}" x:Name="ButtonPlayPause" Click="ButtonPlayPause_Click">
+                <Image/>
+            </Button>
+            <Button  Style="{StaticResource MediaButton}" x:Name="ButtonStop">
                 <Image/>
             </Button>
             <Button  Style="{StaticResource MediaButton}" x:Name="ButtonForward">
                 <Image/>
             </Button>
+            
         </ItemsControl>
 
     </Grid>

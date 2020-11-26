@@ -63,6 +63,10 @@ namespace MediaGadget
         {
 
         }
-    }
+
+		private void ButtonPlayPause_Click(object sender, RoutedEventArgs e) {
+
+		}
+	}
 
 }

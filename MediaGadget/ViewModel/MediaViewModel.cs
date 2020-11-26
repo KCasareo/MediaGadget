@@ -10,10 +10,15 @@ namespace MediaGadget.ViewModel {
 		// Based on https://scottlilly.com/c-design-patterns-mvvm-model-view-viewmodel/
 		// Don't want model object to be modified by view at least. Set to private if get is undesired.
 		// There will only ever be one media model writing to winapi for the mediaviewmodel
-		private Model.MediaModel _mediaModel;
+		private readonly Model.MediaModel _mediaModel;
 
 		private bool canExecute = true;
-		private bool playing = false;
+		private bool _playing;
+		public bool playing {
+			get { return _playing; }
+			// Only the viewmodel should modify this.
+			private set { _playing = value; }
+		}
 
 		// If the view is wholly decoupled, treat the viewmodel as an entrypoint and have it determine dependencies.
 		public MediaViewModel() {
@@ -22,16 +27,18 @@ namespace MediaGadget.ViewModel {
 			// Last worked on 19/10/2020
 			// Figure out how to link view to viewmodel
 			// Commands
-			NextCommand = new RelayCommand(Next, param => this.playing && this.canExecute);
-			PrevCommand = new RelayCommand(Prev, param => this.playing && this.canExecute);
-			StopCommand = new RelayCommand(Stop, param => this.playing && this.canExecute);
-			
+			// TODO: make each extend ICommand instead of relaycommand
+			nextCommand = new ButtonCommand(Next, param => canExecute);
+			prevCommand = new ButtonCommand(Prev);
+			stopCommand = new ButtonCommand(Stop);
+			playPauseCommand = new ToggleButtonCommand(PlayPause);
+
 		}
 		// Media state
 		// Populate audio streams < audio stream collection
 		//		getset
 		//			modify volume controls individually
-		// Bindings
+		// Commands to use
 		private void Next(object obj) {
 			_mediaModel.MediaPressNext();
 			// call obj code behind to modify the button
@@ -48,15 +55,16 @@ namespace MediaGadget.ViewModel {
 
 		private void PlayPause(object obj) {
 			_mediaModel.MediaPressPlayPause();
-			playing = true;
+			playing = !playing;
+			
 		}
 		// 
-		private RelayCommand nextCommand;
-		private RelayCommand prevCommand;
-		private RelayCommand stopCommand;
-		private RelayCommand playCommand;
-		// Commands
-		public RelayCommand NextCommand {
+		private ButtonCommand nextCommand;
+		private ButtonCommand prevCommand;
+		private ButtonCommand stopCommand;
+		private ButtonCommand playPauseCommand;
+		// Commands, get called by ICommand . execute()
+		public ButtonCommand NextCommand {
 			get {
 				return nextCommand;
 			}
@@ -64,46 +72,83 @@ namespace MediaGadget.ViewModel {
 				nextCommand = value;
 			}
 		}
-		public RelayCommand PrevCommand {
-			get;
-			private set;
+		public ButtonCommand PrevCommand {
+			get {
+				return prevCommand;
+			}
+			set {
+				prevCommand = value;
+			}
 		}
-		public RelayCommand StopCommand {
-			get;
-			private set;
+		public ButtonCommand StopCommand {
+			get {
+				return stopCommand;
+			}
+			set {
+				stopCommand = value;
+			}
 		}
-		public RelayCommand PlayPauseCommand {
-			get;
-			private set;
+		public ButtonCommand PlayPauseCommand {
+			get {
+				return playPauseCommand;
+			}
+			set {
+				playPauseCommand = value;
+			}
 		}
+	}
 
 	}
 
-	class RelayCommand : ICommand {
+	class ToggleButtonCommand : ButtonCommand {
+
+		protected Predicate<object> canToggle;
+		public ToggleButtonCommand(Action<object> execute) : this(execute, DefaultCanExecute, DefaultCanToggle) {
+
+		}
+
+		public ToggleButtonCommand(Action<object> execute, Predicate<object> canExecute) : this(execute, canExecute, DefaultCanToggle) {
+
+		}
+
+		public ToggleButtonCommand(Action<object> execute, Predicate<object> canExecute, Predicate<object> canToggle) : base(execute, canExecute) {
+			this.canToggle = canToggle ?? throw new ArgumentNullException("canToggle");
+		}
+
+		private static bool DefaultCanToggle(object parameter) {
+			return false;
+		}
+
+		// Overload
+		public new void Execute(object parameter) {
+			base.execute(parameter);
+			
+		}
+	}
+
+	class ButtonCommand : ICommand {
 		#region
 
 		#endregion
 		// OnMouseDown
-		private Action<object> execute;
+
+		protected Action<object> execute;
 		// Eg typeof button
-		private Predicate<object> canExecute;
+
+		protected Predicate<object> canExecute;
+
+		//
 
 		private event EventHandler CanExecuteChangedInternal;
 
-		public RelayCommand(Action<object> execute) : this(execute, DefaultCanExecute) {
+		public ButtonCommand(Action<object> execute) : this(execute, DefaultCanExecute) { }
 
+		public ButtonCommand(Action<object> execute, 
+							Predicate<object> canExecute) {
+			this.execute = execute ?? throw new ArgumentNullException("execute");
+			this.canExecute = canExecute ?? throw new ArgumentNullException("canExecute");
 		}
 
-		public RelayCommand(Action<object> execute, Predicate<object> canExecute) {
-			if (execute == null) {
-				throw new ArgumentNullException("execute");
-			}
-			if (canExecute == null) {
-				throw new ArgumentNullException("canExecute");
-			}
-			this.execute = execute;
-			this.canExecute = canExecute;
-		}
 
 		// use for stop button activation.
 		public event EventHandler CanExecuteChanged {
@@ -130,8 +175,10 @@ namespace MediaGadget.ViewModel {
 			this.execute = _ => { return; };
 		}
 
-		private static bool DefaultCanExecute(object parameter) {
+		protected static bool DefaultCanExecute(object parameter) {
 			return true;
 		}
+
+
 	}
 }
