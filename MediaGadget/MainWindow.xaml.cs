@@ -29,7 +29,7 @@ namespace MediaGadget
 
         /*
         * https://stackoverflow.com/questions/7417739/make-wpf-window-draggable-no-matter-what-element-is-clicked
-        * @Rachel
+        * Rachel
         * 
         * 
         * 
