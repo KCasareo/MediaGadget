@@ -4,6 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using log4net;
+using System.ComponentModel;
+using Microsoft.Build.Utilities;
+using System.Windows;
 
 namespace MediaGadget.ViewModel {
 	class MediaViewModel {
@@ -20,6 +24,11 @@ namespace MediaGadget.ViewModel {
 			private set { _playing = value; }
 		}
 
+
+		// Logger
+		ILog log = LogManager.GetLogger("MediaGadgetViewModel|");
+
+
 		// If the view is wholly decoupled, treat the viewmodel as an entrypoint and have it determine dependencies.
 		public MediaViewModel() {
 			_mediaModel = new Model.MediaModel();
@@ -28,10 +37,11 @@ namespace MediaGadget.ViewModel {
 			// Figure out how to link view to viewmodel
 			// Commands
 			// TODO: make each extend ICommand instead of relaycommand
-			nextCommand = new ButtonCommand(Next, param => canExecute);
-			prevCommand = new ButtonCommand(Prev);
-			stopCommand = new ButtonCommand(Stop);
-			playPauseCommand = new ToggleButtonCommand(PlayPause);
+			NextCommand = new ButtonCommand(Next, param => canExecute);
+			PrevCommand = new ButtonCommand(Prev, param => canExecute);
+			StopCommand = new ButtonCommand(Stop, param => canExecute);
+			PlayPauseCommand = new ButtonCommand(PlayPause, param => canExecute);
+			log.Info("Initialised.");
 
 		}
 		// Media state
@@ -40,29 +50,38 @@ namespace MediaGadget.ViewModel {
 		//			modify volume controls individually
 		// Commands to use
 		private void Next(object obj) {
+			log.Info("Next called.");
 			_mediaModel.MediaPressNext();
 			// call obj code behind to modify the button
+
 		}
 
 		private void Prev(object obj) {
+			log.Info("Prev called.");
 			_mediaModel.MediaPressPrev();
 		}
 
 		private void Stop(object obj) {
+			log.Info("Stop called.");
 			_mediaModel.MediaPressStop();
 			playing = false;
 		}
 
 		private void PlayPause(object obj) {
+			
+			log.Info("Play/Pause called.");
 			_mediaModel.MediaPressPlayPause();
 			playing = !playing;
-			
+
 		}
 		// 
 		private ButtonCommand nextCommand;
 		private ButtonCommand prevCommand;
 		private ButtonCommand stopCommand;
 		private ButtonCommand playPauseCommand;
+
+
+
 		// Commands, get called by ICommand . execute()
 		public ButtonCommand NextCommand {
 			get {
@@ -70,6 +89,7 @@ namespace MediaGadget.ViewModel {
 			}
 			set {
 				nextCommand = value;
+
 			}
 		}
 		public ButtonCommand PrevCommand {
@@ -98,9 +118,8 @@ namespace MediaGadget.ViewModel {
 		}
 	}
 
-	}
 
-	class ToggleButtonCommand : ButtonCommand {
+	public class ToggleButtonCommand : ButtonCommand {
 
 		protected Predicate<object> canToggle;
 		public ToggleButtonCommand(Action<object> execute) : this(execute, DefaultCanExecute, DefaultCanToggle) {
@@ -122,11 +141,11 @@ namespace MediaGadget.ViewModel {
 		// Overload
 		public new void Execute(object parameter) {
 			base.execute(parameter);
-			
+
 		}
 	}
 
-	class ButtonCommand : ICommand {
+	public class ButtonCommand : ICommand {
 		#region
 
 		#endregion
@@ -143,7 +162,7 @@ namespace MediaGadget.ViewModel {
 
 		public ButtonCommand(Action<object> execute) : this(execute, DefaultCanExecute) { }
 
-		public ButtonCommand(Action<object> execute, 
+		public ButtonCommand(Action<object> execute,
 							Predicate<object> canExecute) {
 			this.execute = execute ?? throw new ArgumentNullException("execute");
 			this.canExecute = canExecute ?? throw new ArgumentNullException("canExecute");
@@ -167,7 +186,7 @@ namespace MediaGadget.ViewModel {
 		}
 
 		public void Execute(object parameter) {
-			this.execute(parameter);
+			execute(parameter);
 		}
 
 		public void Destroy() {

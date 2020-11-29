@@ -22,7 +22,9 @@ namespace MediaGadget
     {
         public MainWindow()
         {
+            log4net.Config.XmlConfigurator.Configure();
             InitializeComponent();
+            this.DataContext = new ViewModel.MediaViewModel();
         }
 
         /*
@@ -34,39 +36,23 @@ namespace MediaGadget
         * 
         *   
         */
+        /**
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
             {
                 this.DragMove();
             }
+        }*/
+
+        private void Window_PreviewMouseDown(object sender, MouseButtonEventArgs e) {
+            if (e.ChangedButton == MouseButton.Left) {
+                this.DragMove();
+            }
         }
 
 
         // Move button functions to code-behind for resources
-        private void Button_OnMouseEnter(object sender, MouseEventArgs e)
-        {
-            Button source = e.Source as Button;
-            // Fade to another colour
-            if (e.RoutedEvent.Equals(MouseEnterEvent) )
-            {
-
-            }
-        }
-
-        private void Button_OnMouseLeave(object sender, MouseEventArgs e)
-        {
-
-        }
-
-        private void Button_Play_OnClick(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-		private void ButtonPlayPause_Click(object sender, RoutedEventArgs e) {
-
-		}
 	}
 
 }

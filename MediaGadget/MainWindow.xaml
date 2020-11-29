@@ -3,10 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MediaGadget"
+        xmlns:viewmodels="clr-namespace:MediaGadget.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
-        WindowStyle="None" PreviewMouseDown="Window_MouseDown">
+        WindowStyle="None">
     <Window.Resources>
         <ResourceDictionary Source="Style\Style.xaml"/>
     </Window.Resources>
@@ -27,19 +27,40 @@
                     <UniformGrid Rows="1"/>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
-            <Button Style="{StaticResource MediaButton}" x:Name="ButtonBack">
+            <Button 
+                    x:Name="ButtonBack" Command="{Binding PrevCommand}">
+                <Canvas>
+
+                </Canvas>
+            </Button>
+            <Button 
+                    x:Name="ButtonPlayPause" Command="{Binding PlayPauseCommand}">
+                <Canvas>
+                    <Path Data="M10,110 L60,10 L110,110 z" Fill="White" Canvas.Left="-50" Stretch="Fill" Canvas.Top="-50" Panel.ZIndex="-5" RenderTransformOrigin="0.5,0.5" >
+                        <Path.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="90"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </Path.RenderTransform>
+                    </Path>
+                </Canvas>
+            </Button>
+            <Button 
+                     x:Name="ButtonStop" Command="{Binding StopCommand}">
+                <Canvas>
+                    <Rectangle Width="100" Height="100" Canvas.Left="-50" Canvas.Top="-50" Fill="White">
+                        
+                    </Rectangle>
+                </Canvas>
+            </Button>
+            <Button  
+                     x:Name="ButtonForward" Command="{Binding NextCommand}">
                 <Image/>
             </Button>
-            <Button  Style="{StaticResource MediaButton}" x:Name="ButtonPlayPause" Click="ButtonPlayPause_Click">
-                <Image/>
-            </Button>
-            <Button  Style="{StaticResource MediaButton}" x:Name="ButtonStop">
-                <Image/>
-            </Button>
-            <Button  Style="{StaticResource MediaButton}" x:Name="ButtonForward">
-                <Image/>
-            </Button>
-            
+
         </ItemsControl>
 
     </Grid>
