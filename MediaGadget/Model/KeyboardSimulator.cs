@@ -10,14 +10,12 @@ using System.Windows.Media;
 
 namespace MediaGadget.Model {
 	class KeyboardSimulator {
-		DependencyObject _dependency;
 
 		public KeyboardSimulator() {
 			
 		}
 
 		public KeyboardSimulator(DependencyObject dependency) {
-			_dependency = dependency;
 		}
 
 		public void SendKey(Key key) {
@@ -26,6 +24,10 @@ namespace MediaGadget.Model {
 			var target = Keyboard.FocusedElement;
 			var routedEvent = Keyboard.KeyDownEvent;
 			uses https://stackoverflow.com/questions/10820990/how-to-create-a-keyeventargs-object-in-wpf-related-to-a-so-answer
+			Solution does not work since PresentationForm is evaluating to null
+			Thought that the media inputs were being sent to the app instead of to the system, but ProcessInput never returns true.
+			If this is to work, this object probably needs a handle to the main window.
+
 			*/
 
 			var target = Keyboard.FocusedElement;

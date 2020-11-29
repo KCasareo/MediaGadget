@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewmodels="clr-namespace:MediaGadget.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="MainWindow" Height="300" Width="800"
         WindowStyle="None">
     <Window.Resources>
         <ResourceDictionary Source="Style\Style.xaml"/>
     </Window.Resources>
-    <Grid Name="TopLevelGrid">
+    <Grid Name="TopLevelGrid" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="18*"/>
@@ -21,22 +21,67 @@
             <RowDefinition Height="2*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Grid.RowSpan="3"
+                    Background="Black"
+                    PreviewMouseDown="Window_PreviewMouseDown">
+
+        </StackPanel>
         <ItemsControl Grid.Column="1" Grid.Row="1" >
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <UniformGrid Rows="1"/>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
-            <Button 
+            <Button Style="{StaticResource MediaButton}"
                     x:Name="ButtonBack" Command="{Binding PrevCommand}">
                 <Canvas>
-
+                    <Path Data="M10,110 L60,10 L110,110 z" Fill="White" Canvas.Left="-40" Stretch="Fill" Canvas.Top="-30" Panel.ZIndex="-5" RenderTransformOrigin="0.5,0.5" Height="60" >
+                        <Path.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="270"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </Path.RenderTransform>
+                    </Path>
+                    <Rectangle Width="20" Height="100" Fill="White" 
+                                   Canvas.Left="-40" Canvas.Top="-50"/>
                 </Canvas>
             </Button>
-            <Button 
+            <Button Style="{StaticResource MediaButton}"
                     x:Name="ButtonPlayPause" Command="{Binding PlayPauseCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Canvas>
+                        <Path Data="M10,110 L60,10 L110,110 z" Fill="White" Canvas.Left="-25" Stretch="Fill" Canvas.Top="-30" Panel.ZIndex="-5" RenderTransformOrigin="0.5,0.5" Height="60" >
+                            <Path.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="90"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </Path.RenderTransform>
+                        </Path>
+                        <Rectangle Width="20" Height="100" Fill="White" 
+                                   Canvas.Left="-50" Canvas.Top="-50"/>
+                    </Canvas>
+                </StackPanel>
+            </Button>
+            <Button Style="{StaticResource MediaButton}"
+                     x:Name="ButtonStop" Command="{Binding StopCommand}">
                 <Canvas>
-                    <Path Data="M10,110 L60,10 L110,110 z" Fill="White" Canvas.Left="-50" Stretch="Fill" Canvas.Top="-50" Panel.ZIndex="-5" RenderTransformOrigin="0.5,0.5" >
+                    <Rectangle Width="100" Height="100" Canvas.Left="-50" Canvas.Top="-50" Fill="White">
+
+                    </Rectangle>
+                </Canvas>
+            </Button>
+            <Button  Style="{StaticResource MediaButton}"
+                     x:Name="ButtonForward" Command="{Binding NextCommand}">
+                <Canvas>
+                    <Path Data="M10,110 L60,10 L110,110 z" Fill="White" Canvas.Left="-50" Stretch="Fill" Canvas.Top="-30" Panel.ZIndex="-5" RenderTransformOrigin="0.5,0.5" Height="60" >
                         <Path.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform/>
@@ -46,19 +91,9 @@
                             </TransformGroup>
                         </Path.RenderTransform>
                     </Path>
+                    <Rectangle Width="20" Height="100" Fill="White" 
+                                   Canvas.Left="30" Canvas.Top="-50"/>
                 </Canvas>
-            </Button>
-            <Button 
-                     x:Name="ButtonStop" Command="{Binding StopCommand}">
-                <Canvas>
-                    <Rectangle Width="100" Height="100" Canvas.Left="-50" Canvas.Top="-50" Fill="White">
-                        
-                    </Rectangle>
-                </Canvas>
-            </Button>
-            <Button  
-                     x:Name="ButtonForward" Command="{Binding NextCommand}">
-                <Image/>
             </Button>
 
         </ItemsControl>
