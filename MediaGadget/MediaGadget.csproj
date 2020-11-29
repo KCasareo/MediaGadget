@@ -91,7 +91,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\KeyboardEvent.cs" />
-    <Compile Include="Model\KeyboardSimulator.cs" />
     <Compile Include="ViewModel\MediaViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -111,8 +110,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\ScanCodeShort.cs" />
-    <Compile Include="Model\InputDevice.cs" />
     <Compile Include="Model\MediaModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

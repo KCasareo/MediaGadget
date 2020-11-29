@@ -13,7 +13,6 @@ namespace MediaGadget.Model
     class MediaModel : INotifyPropertyChanged {
         ILog log = LogManager.GetLogger("MediaModel|");
         //protected IKeyboard keyboard;
-        protected KeyboardSimulator simulator;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -30,7 +29,6 @@ namespace MediaGadget.Model
             this.keyboard = IKeyboard.GetDefaultDevice();
         }*/
         public MediaModel() {
-            simulator = new KeyboardSimulator();
 		}
 
         /*

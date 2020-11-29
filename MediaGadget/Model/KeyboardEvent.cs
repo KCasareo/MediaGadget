@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace MediaGadget.Model {
     // https://stackoverflow.com/questions/15013582/send-multimedia-commands
+    // This one works.
     public class KeyboardEvent {
 		[DllImport("user32.dll", SetLastError = true)]
 		public static extern void keybd_event(byte virtualKey, byte scanCode, uint flags, IntPtr extraInfo);
