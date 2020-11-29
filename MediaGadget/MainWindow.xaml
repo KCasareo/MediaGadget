@@ -6,7 +6,9 @@
         xmlns:viewmodels="clr-namespace:MediaGadget.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="300" Width="800"
-        WindowStyle="None">
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent">
     <Window.Resources>
         <ResourceDictionary Source="Style\Style.xaml"/>
     </Window.Resources>
