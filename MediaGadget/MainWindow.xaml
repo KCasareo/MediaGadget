@@ -98,7 +98,35 @@
                 </Canvas>
             </Button>
 
-        </ItemsControl>
 
+        </ItemsControl>
+        <Button Style="{StaticResource MediaButton}" 
+            x:Name="CloseButton"
+            MaxHeight="20" MaxWidth="20"
+            Click="CloseButton_Click"
+            Grid.Column="2">
+            <Canvas>
+                <Rectangle Width="5" Height="30" Fill="White" Canvas.Top="-25" Canvas.Left="-10" RenderTransformOrigin="0.5,0.5">
+                    <Rectangle.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="45"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+                <Rectangle Width="5" Height="30" Fill="White" Canvas.Top="-25" Canvas.Left="-10" RenderTransformOrigin="0.5,0.5">
+                    <Rectangle.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="135"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+            </Canvas>
+        </Button>
     </Grid>
 </Window>
